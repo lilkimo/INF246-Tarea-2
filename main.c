@@ -47,6 +47,7 @@ void crearHijos(){
 }
 
 int main() {
+
     int fd_tablero, fd_posiciones, status;
     int *ptr_tablero, *ptr_posiciones;
 
@@ -64,6 +65,8 @@ int main() {
 
     memcpy(ptr_tablero, tablero, sizeof(tablero));
     memcpy(ptr_posiciones, posiciones, sizeof(posiciones));
+
+    crearHijos();   
 
 
 
