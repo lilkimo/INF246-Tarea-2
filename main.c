@@ -1,10 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+//para la creacion de hijos
+#include <unistd.h> 
+
+//para el manejo de memoria compartida
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>          
+
 #include "queue.c"
 
 #define CANTIDADJUGADORES 4
 #define CANTIDADCASILLAS 29
-
+#define KEY 1200
 typedef int jugador; // 0: Jugador, {1, 2, 3}: Bot.
 typedef int casilla; // 0: Blanco, 1: ?, 2: ??.
 
@@ -29,7 +39,45 @@ int tirarDado() {
     return (rand()%6) + 1;
 }
 
+void crearHijos(){
+    int id_jugador;
+
+    for(int i = 0; i < 4; i++){
+        if (fork() == 0){
+            id_jugador = i;
+            printf("hijo %d creado\n",id_jugador);
+            break;
+        }
+    }
+}
+
 int main() {
     srand(2);
+
+    int fd_tablero, fd_posiciones, status;
+    int *ptr_tablero, *ptr_posiciones;
+
+    fd_tablero = shmget(ftok("/bin/cat", KEY), sizeof(tablero), 0777 | IPC_CREAT);
+    fd_posiciones = shmget(ftok("/bin/chmod", KEY), sizeof(posiciones), 0777 | IPC_CREAT);
+    if (fd_tablero == -1 || fd_posiciones == -1){
+        printf("Error, memoria compartida no pudo ser creada\n");
+    }
+
+    ptr_tablero = shmat(fd_tablero, 0, 0);
+    ptr_posiciones = shmat(fd_posiciones, 0, 0);
+    if (ptr_tablero == NULL || ptr_posiciones == NULL){
+        printf("ERROR AL MAPEAR LA S.M.");
+    }
+
+    memcpy(ptr_tablero, tablero, sizeof(tablero));
+    memcpy(ptr_posiciones, posiciones, sizeof(posiciones));
+
+    crearHijos();   
+
+
+
+
+    close(fd_tablero);
+    close(fd_posiciones);
     return 0;
 }
