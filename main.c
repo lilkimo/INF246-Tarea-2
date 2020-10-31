@@ -35,7 +35,7 @@ casilla mover(const jugador jugador, const casilla *tablero, const int cantidadC
 }
 
 void crearHijos(){
-    int id_jugador;
+    int id_jugador = -1;
 
     for(int i = 0; i < 4; i++){
         if (fork() == 0){
