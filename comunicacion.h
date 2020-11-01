@@ -10,9 +10,12 @@
 #define READ 0
 #define WRITE 1
 
+typedef int Pipe;
+
 void *crearMemoriaCompartida(size_t size);
 void crearPipes();
 void manejoPipes(int id_jugador);
 void crearHijos(int *id);
+void cerrarPipes(int idJugador);
 
 #endif
