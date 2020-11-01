@@ -1,8 +1,3 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #define READ 0
 #define WRITE 1
 
@@ -72,37 +67,3 @@ void crearHijos(int *id){
         }
     }
 }
-
-int main(){
-    char mensaje[255];
-    int cont = 0;
-    int flag = 1;
-    int id_jugador = -1;
-    int num = 0;
-    pipesCreation();
-    crearHijos(&id_jugador);
-    pipesManagement(id_jugador);
-    printf("hijoooooooo %d\n",id_jugador);
-    if (id_jugador > 0){
-        exit(0);
-    }
-    while(flag){
-        if (id_jugador == 0) {
-            write(pipeJ0_P[WRITE], &cont, sizeof(num));
-            //close(pipeJ0_P[WRITE]);
-            cont += 1;
-            if (cont > 10){
-                exit(0);
-            }
-        }
-        else if (id_jugador == -1) {
-            read(pipeJ0_P[READ], &num, sizeof(num));
-            //printf("el mensaje es: %d\n",num);
-            if (num == 10){
-                flag = 0;
-            }
-        }
-    }
-    return 0;
-}
-
