@@ -6,15 +6,26 @@
 #include <unistd.h> 
 
 //para el manejo de memoria compartida
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>          
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <wait.h>      
 
 #include "queue.c"
 
 #define CANTIDADJUGADORES 4
 #define CANTIDADCASILLAS 29
-#define KEY 1200
+#define READ 0
+#define WRITE 1
+
+int pipeJ0_P[2];
+int pipeJ1_P[2];
+int pipeJ2_P[2];
+int pipeJ3_P[2];
+int pipeP_J0[2];
+int pipeP_J1[2];
+int pipeP_J2[2];
+int pipeP_J3[2]; 
+
 typedef int jugador; // 0: Jugador, {1, 2, 3}: Bot.
 typedef int casilla; // 0: Blanco, 1: ?, 2: ??.
 
@@ -39,13 +50,41 @@ int tirarDado() {
     return (rand()%6) + 1;
 }
 
-void crearHijos(){
-    int id_jugador = -1;
+void manejoPipes(int id_jugador){
+    if (id_jugador == -1){
+        close(pipeJ0_P[WRITE]);
+        close(pipeJ1_P[WRITE]);
+        close(pipeJ2_P[WRITE]);
+        close(pipeJ3_P[WRITE]);
+        close(pipeP_J0[READ]);
+        close(pipeP_J1[READ]);
+        close(pipeP_J2[READ]);
+        close(pipeP_J3[READ]);
+    }
+    else if(id_jugador == 0){
+        close(pipeJ0_P[READ]);
+        close(pipeP_J0[WRITE]);
+    }
+    else if(id_jugador == 1){
+        close(pipeJ1_P[READ]);
+        close(pipeP_J1[WRITE]);
+    }
+    else if(id_jugador == 2){
+        close(pipeJ2_P[READ]);
+        close(pipeP_J2[WRITE]);
+    }
+    else if(id_jugador == 3){
+        close(pipeJ3_P[READ]);
+        close(pipeP_J3[WRITE]);
+    }
+}
+
+void crearHijos(int *id){
 
     for(int i = 0; i < 4; i++){
         if (fork() == 0){
-            id_jugador = i;
-            printf("hijo %d creado\n",id_jugador);
+            *id = i;
+            printf("hijo %d creado\n",*id);
             break;
         }
     }
@@ -53,10 +92,11 @@ void crearHijos(){
 
 int main() {
     srand(2);
+    int id_jugador = -1;
 
-    int fd_tablero, fd_posiciones, status;
+    /*int fd_tablero, fd_posiciones, status;
     int *ptr_tablero, *ptr_posiciones;
-
+    
     fd_tablero = shmget(ftok("/bin/cat", KEY), sizeof(tablero), 0777 | IPC_CREAT);
     fd_posiciones = shmget(ftok("/bin/chmod", KEY), sizeof(posiciones), 0777 | IPC_CREAT);
     if (fd_tablero == -1 || fd_posiciones == -1){
@@ -70,14 +110,25 @@ int main() {
     }
 
     memcpy(ptr_tablero, tablero, sizeof(tablero));
-    memcpy(ptr_posiciones, posiciones, sizeof(posiciones));
+    memcpy(ptr_posiciones, posiciones, sizeof(posiciones));*/
 
-    crearHijos();   
+    casilla *ptr_tablero = create_shared_memory(sizeof(tablero));
+    int *ptr_posiciones = create_shared_memory(sizeof(posiciones));
+    int *ptr_sentido = create_shared_memory(sizeof(sentido));
+
+    *ptr_tablero = *tablero;
+    *ptr_posiciones = *posiciones;
+    *ptr_sentido = sentido;
+
+    crearPipes();
+    crearHijos(&id_jugador);
+    sleep(1);
+    manejoPipes(id_jugador);
+
+    printf("ID: %d, SENTIDO = %d\n", id_jugador, ptr_tablero[1]);
 
 
-
-
-    close(fd_tablero);
-    close(fd_posiciones);
+    //close(fd_tablero);
+    //close(fd_posiciones);
     return 0;
 }
