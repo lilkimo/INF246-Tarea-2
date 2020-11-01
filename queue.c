@@ -45,22 +45,3 @@ void printqueue(queue *q) {
     }
     printf("%d]\n", q->content[j]);
 }
-
-int main() {
-    int pop;
-    queue *q = newqueue(4);
-    enqueue(q, 1);
-    enqueue(q, 2);
-    enqueue(q, 3);
-    enqueue(q, 4);
-    printqueue(q);
-    pop = dequeue(q);
-    printf("%d popped\n", pop);
-    printqueue(q);
-    pop = dequeue(q);
-    printf("%d popped\n", pop);
-    printqueue(q);
-    pop = dequeue(q);
-    printf("%d popped\n", pop);
-    printqueue(q);
-}

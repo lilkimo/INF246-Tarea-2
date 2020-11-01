@@ -129,3 +129,131 @@ void ejecutarEfecto(casilla tipoCasilla, const jugador jugadorActual, casilla *t
         exit(1);
     }
 }
+
+typedef struct posicion {
+    int posicion;
+    int cantidadJugadores;
+    jugador jugadores[CANTIDADJUGADORES];
+} posicion;
+
+int cmpposicion (const void * a, const void * b) {
+   return ( (*(posicion *)a).posicion - (*(posicion *)b).posicion );
+}
+
+void printtablero(const casilla *tablero, const int *posiciones, const int sentido) {
+    // BEGIN posiciones de los jugadores.
+    posicion _posiciones[CANTIDADJUGADORES];
+    int largo = 0, maxCantidadJugadores = 0;
+    for (int i = 0, existe; i < CANTIDADJUGADORES; i++) {
+        existe = 0;
+        for (int j = 0; j < largo; j++) {
+            if (posiciones[i] == _posiciones[j].posicion) {
+                existe = 1;
+                
+                _posiciones[j].jugadores[_posiciones[j].cantidadJugadores++] = i;
+                if (_posiciones[j].cantidadJugadores > maxCantidadJugadores)
+                    maxCantidadJugadores = _posiciones[j].cantidadJugadores;
+                
+                break;
+            }
+        }
+        if (!existe) {
+            _posiciones[largo].posicion = posiciones[i];
+            
+            _posiciones[largo].cantidadJugadores = 0;
+            _posiciones[largo].jugadores[_posiciones[largo].cantidadJugadores++] = i;
+            if (_posiciones[largo].cantidadJugadores > maxCantidadJugadores)
+                maxCantidadJugadores = _posiciones[largo].cantidadJugadores;
+            largo++;
+        }
+    }
+    qsort(_posiciones, largo, sizeof(posicion), cmpposicion);
+    // END posiciones de los jugadores.
+
+    int posicionActual;
+    char *casilla;
+    printf("[ I]");
+    if (sentido == 1) {
+        for (int i = 1; i < CANTIDADCASILLAS-1; i++) {
+            if (tablero[i] == 0)
+                casilla = "  ";
+            else if (tablero[i] == 1)
+                casilla = " ?";
+            else if (tablero[i] == 2)
+                casilla = "??";
+            else
+                casilla = " u"; // u de Unknown
+            printf("[%s]", casilla);
+        }
+        printf("[ F]\n");
+        posicionActual = 0;
+        for (int i = 0; i < CANTIDADCASILLAS; i++) {
+            if (_posiciones[posicionActual].posicion == i) {
+                printf(" ^^ ");
+                if (++posicionActual == largo)
+                    break;
+            }
+            else
+                printf("    ");
+        }
+        printf("\n");
+        for (int i = 0; i < maxCantidadJugadores; i++) {
+            posicionActual = 0;
+            for (int j = 0; j < CANTIDADCASILLAS; j++) {
+                if (_posiciones[posicionActual].posicion == j && _posiciones[posicionActual].cantidadJugadores > i) {
+                    if (_posiciones[posicionActual].jugadores[i] == 0)
+                        printf("jgdr");
+                    else
+                        printf("bot%d", _posiciones[posicionActual].jugadores[i]);
+                    if (++posicionActual == largo)
+                        break;
+                }
+                else
+                    printf("    ");
+            }
+            printf("\n");
+        }
+    }
+    // Esto es lo mismo que arriba pero con algúnos - por ahí.
+    else if (sentido == -1) {
+        for (int i = CANTIDADCASILLAS-2; i > 0; i--) {
+            if (tablero[i] == 0)
+                casilla = "  ";
+            else if (tablero[i] == 1)
+                casilla = " ?";
+            else if (tablero[i] == 2)
+                casilla = "??";
+            else
+                casilla = " u"; // u de Unknown
+            printf("[%s]", casilla);
+        }
+        printf("[ F]\n");
+        posicionActual = largo-1;
+        for (int i = CANTIDADCASILLAS-1; i >= 0; i--) {
+            if (_posiciones[posicionActual].posicion == i) {
+                printf(" ^^ ");
+                if (posicionActual-- == 0)
+                    break;
+            }
+            else
+                printf("    ");
+        }
+        printf("\n");
+        for (int i = 0; i < maxCantidadJugadores; i++) {
+            posicionActual = largo-1;
+            for (int j = CANTIDADCASILLAS-1; j >= 0; j--) {
+                if (_posiciones[posicionActual].posicion == j && _posiciones[posicionActual].cantidadJugadores > i) {
+                    if (_posiciones[posicionActual].jugadores[i] == 0)
+                        printf("jgdr");
+                    else
+                        printf("bot%d", _posiciones[posicionActual].jugadores[i]);
+                    if (posicionActual-- == 0)
+                        break;
+                }
+                else
+                    printf("    ");
+            }
+            printf("\n");
+        }
+    }
+}

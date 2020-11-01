@@ -15,6 +15,7 @@ typedef void (*efecto)(jugador, casilla *, int *, int *, queue *);
 efecto vectorEfectos1[];
 efecto vectorEfectos2[];
 
-void ejecutarEfecto(casilla tipoCasilla, const jugador jugadorActual, casilla *tablero, int *posiciones, int *sentido, queue *colaTurnos);
+void ejecutarEfecto(const casilla tipoCasilla, const jugador jugadorActual, casilla *tablero, int *posiciones, int *sentido, queue *colaTurnos);
+void printtablero(const casilla *tablero, const int *posiciones, const int sentido);
 
 #endif
