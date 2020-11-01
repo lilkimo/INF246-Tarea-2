@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+*/
 
 #include "tablero.c" //cambiar por tablero.h
 #include "comunicacion.h"
@@ -28,6 +30,7 @@ int posiciones[] = {0, 0, 0, 0}; // Posiciones de los Jugadores.
 int sentido = 1; // -1: Inverso, 1: Normal.
 
 int main() {
+    /*
     srand(2);
     int id_jugador = -1;
 
@@ -42,7 +45,7 @@ int main() {
     crearPipes();
     crearHijos(&id_jugador);
     manejoPipes(id_jugador);
-
+    */
     // BEGIN ejemplo
     
     queue *colaTurnos = newqueue();

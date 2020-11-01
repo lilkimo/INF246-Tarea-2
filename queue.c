@@ -1,67 +1,45 @@
+#include "comunicacion.c" // Cambiar por comunicacion.h
 #include "queue.h"
 
-_queueNode * _newQueueNode(int k) {
-    _queueNode *temp = (_queueNode *)malloc(sizeof(_queueNode)); 
-    temp->key = k; 
-    temp->next = NULL; 
-    return temp; 
+queue *newqueue(unsigned int size) {
+    queue *q = crearMemoriaCompartida(sizeof(queue));
+    q->content = crearMemoriaCompartida(sizeof(int)*size);
+    q->front = q->rear = q->length = 0;
+    q->size = size;
+    return q;
 }
 
-queue* newqueue() { 
-    queue *q = (queue *)malloc(sizeof(queue)); 
-    q->front = q->rear = NULL; 
-    return q; 
-} 
-
-void enqueue(queue *q, int k) { 
-    _queueNode *temp = _newQueueNode(k); 
+void enqueue(queue *q, int k) {
+    if (q->length == q->size)
+        return;
     
-    if (q->rear == NULL) { 
-        q->front = q->rear = temp;
-    }
-    else {
-        q->rear->next = temp; 
-        q->rear = temp;
-    }
-
+    q->rear = (q->rear+1)%q->size;
+    q->content[q->rear] = k;
     q->length++;
-} 
+}
 
-int dequeue(queue *q) { 
-    if (q->front == NULL) 
-        return -1; 
+int dequeue(queue *q) {
+    if (q->length < 1)
+        return -1;
     
-    _queueNode *temp = q->front; 
-    int value = temp->key;
-
-    q->front = q->front->next; 
-
-    if (q->front == NULL) 
-        q->rear = NULL; 
-    
-    free(temp);
+    int k = q->content[q->front];
+    q->front = (q->front+1)%q->size;
     q->length--;
 
-    return value;
+    return k;
 }
 
-void clearqueue(queue *q) {
-    while (q->length != 0)
-        dequeue(q);
-}
-
-void _printqueue(_queueNode *prev, _queueNode *rear) {
-    if (prev != rear)
-        _printqueue(prev->next, rear);
-    printf("%d, ", prev->key);
+void deletequeue(queue *q) {
+    free(q->content);
+    free(q);
 }
 
 void printqueue(queue *q) {
-    if (q->length <= 0)
-        return;
-    
+    int i, j;
     printf("[");
-    if (q->front != q->rear)
-        _printqueue(q->front->next, q->rear);
-    printf("%d]\n", q->front->key);
+    for (i = 0, j = q->rear; i < q->length-1; i++) {
+        printf("%d, ", q->content[j]);
+        j = (j-1)%q->size;
+    }
+    printf("%d]\n", q->content[j]);
 }

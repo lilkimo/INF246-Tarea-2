@@ -4,21 +4,15 @@
 #include <stdio.h> 
 #include <stdlib.h>
 
-typedef struct queueNode { 
-    int key; 
-    struct queueNode *next; 
-} _queueNode; 
-
 typedef struct { 
-    _queueNode *front, *rear;
-    int length;
-} queue; 
+    unsigned int front, rear, length, size;
+    int *content;
+} queue;
 
-_queueNode * _newQueueNode(int k);
-queue * newqueue();
+queue * newqueue(unsigned int size);
 void enqueue(queue *q, int k);
 int dequeue(queue *q);
-void clearqueue(queue *q);
+void delete(queue *q);
 void printqueue(queue *q);
 
 #endif
