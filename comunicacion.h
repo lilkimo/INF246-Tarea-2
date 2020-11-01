@@ -11,6 +11,7 @@
 #define WRITE 1
 
 typedef int Pipe;
+typedef int mensaje;
 
 void *crearMemoriaCompartida(size_t size);
 void crearPipes();

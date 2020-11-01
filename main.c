@@ -2,12 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/*
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-*/
-
 #include "tablero.c" //cambiar por tablero.h
 #include "comunicacion.h"
 
@@ -80,7 +74,6 @@ int ejecutarTurno(int jugadorActual, casilla *ptrTablero, int *ptrPosiciones, in
     return flag;
 }
 
-typedef int mensaje;
 casilla tablero[] = {0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 0};
 int posiciones[] = {0, 0, 0, 0}; // Posiciones de los Jugadores.
 int sentido = 1; // -1: Inverso, 1: Normal.
