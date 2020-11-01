@@ -11,7 +11,7 @@ int tirarDado() {
 }
 
 void crearHijos(){
-    int idJugador;
+    int idJugador = -1;
 
     for(int i = 0; i < 4; i++) {
         if (fork() == 0) {
