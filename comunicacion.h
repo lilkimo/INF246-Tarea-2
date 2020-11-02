@@ -13,6 +13,9 @@
 typedef int Pipe;
 typedef int mensaje;
 
+Pipe *vectorPipesJx_P[4];
+Pipe *vectorPipesP_Jx[4];
+
 void *crearMemoriaCompartida(size_t size);
 void crearPipes();
 void manejoPipes(int id_jugador);

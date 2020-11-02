@@ -1,7 +1,5 @@
 #include "comunicacion.h"
 
-
-
 int pipeJ0_P[2];
 int pipeJ1_P[2];
 int pipeJ2_P[2];

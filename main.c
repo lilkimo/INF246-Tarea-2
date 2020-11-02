@@ -42,7 +42,7 @@ int main() {
     *ptrSentido = sentido;
     *ptrFlag = flag;
 
-    printf("Ingrese el lugar en el que quiere ingresar:\n");
+    printf("Ingrese el lugar en el que quiere ingresar: ");
     scanf("%d", &posJugador);
     posJugador = posJugador - 1; 
     for (int i = 0, j = 1; i < CANTIDADJUGADORES; i++) {
