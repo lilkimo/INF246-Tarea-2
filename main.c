@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "tablero.h"
 #include "comunicacion.h"
@@ -13,7 +14,7 @@ Hace:    lanza un dado de 6 caras, retorna la cara que salio.
 */
 
 int tirarDado() {
-    srand(getpid());
+    srand(time(NULL));
     return (rand()%6) + 1;
 }
 
