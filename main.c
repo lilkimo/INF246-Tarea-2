@@ -85,6 +85,7 @@ int main() {
                     write(vectorPipesP_Jx[jugadorActual][WRITE], &vectorMensajesP_Jx, 1);
                 }
             }
+            printtablero(ptrTablero, ptrPosiciones, *ptrSentido);
             int final = CANTIDADCASILLAS - 1;
             if (*ptrSentido == -1){
                 int final = 0;
@@ -111,13 +112,15 @@ int main() {
             vectorMensajesJx_P[idProceso] = 1;
             write(vectorPipesJx_P[idProceso][WRITE], &vectorMensajesJx_P[idProceso], 1);
 
-
-            casilla casilla = mover(idProceso, tirarDado()*(*ptrSentido), ptrTablero, ptrPosiciones);
+            int dado = tirarDado();
+            printf("saco un: %d\n", dado);
+            casilla casilla = mover(idProceso, dado*(*ptrSentido), ptrTablero, ptrPosiciones);
             if (casilla){
                 ejecutarEfecto(casilla, idProceso, ptrTablero, ptrPosiciones, ptrSentido, colaTurnos);
             }
             vectorMensajesJx_P[idProceso] = 0;
             write(vectorPipesJx_P[idProceso][WRITE], &vectorMensajesJx_P[idProceso], 1);
+            
         }
     }
 
