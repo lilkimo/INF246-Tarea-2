@@ -64,6 +64,9 @@ int main() {
     
     while (*ptrFlag) {
         if (idProceso == -1) {
+            printf("La cola de turnos es ");
+            printqueue(colaTurnos);
+            printf("0: Jugador, 1: Bot 1, 2: Bot 2, 3: Bot 3\n");
             jugadorActual = dequeue(colaTurnos);
             if (jugadorActual == 0)
                 printf("¡Es tu turno!\n");
