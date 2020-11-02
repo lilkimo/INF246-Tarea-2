@@ -1,7 +1,7 @@
 #ifndef __TABLERO_H__
 #define __TABLERO_H__
 
-#include "queue.c" // Cambiar por .h
+#include "queue.h"
 
 #define CANTIDADJUGADORES 4
 #define CANTIDADCASILLAS 29

@@ -1,4 +1,4 @@
-#include "comunicacion.c" // Cambiar por comunicacion.h
+#include "comunicacion.h"
 #include "queue.h"
 
 /*

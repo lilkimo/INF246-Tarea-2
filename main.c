@@ -2,8 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "tablero.c" //cambiar por tablero.h
+#include "tablero.h"
 #include "comunicacion.h"
+
+/*
+Nombre:  tirarDado
+Recibe:  void.
+Retorna: int dado.   
+Hace:    lanza un dado de 6 caras, retorna la cara que salio.
+*/
 
 int tirarDado() {
     srand(getpid());
