@@ -6,3 +6,7 @@ programa
 efectos.out
 efectos.c
 queue.out
+comunicacion.o
+main.o
+queue.o
+tablero.o
