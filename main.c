@@ -150,5 +150,6 @@ int main() {
             
         }
     }
+    cerrarPipes(idProceso);
     return 0;
 }
