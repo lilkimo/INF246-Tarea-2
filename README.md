@@ -3,6 +3,8 @@
 Camilo Gonzalez, 201873550-7
 
 Zarko Kuljis, 201823523-7
+
+Nos pusieron un 100, pero lo consideramos una nota dudosa puesto que cuando probamos el programa se colgaba aleatoriamente.
 # Uso
 Ejecute el comando make all. Para manejar el programa escriba el turno en el que quiera comenzar, luego, el juego comenzara y se detendra para preguntar si quiere ejecutar el efecto. En cada turno se imprimira el tablero, las posiciones y la cola. Al finalizar el juego, se mostrara al ganador.
 # Consideraciones
